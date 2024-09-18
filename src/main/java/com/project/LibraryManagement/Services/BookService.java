@@ -17,17 +17,17 @@ public class BookService {
     @Autowired
     private UserRepo userRepo;
 
-    public List<Book> findAll()
+    public List<Book> findall()
     {
         return bookRepo.findAll();
     }
 
-    public Book findById(Long id)
+    public Book findByid(Long id)
     {
         return bookRepo.findById(id).orElse(null);
     }
 
-    public Book save(Book book)
+    public Book create(Book book)
     {
         return bookRepo.save(book);
     }
@@ -39,26 +39,26 @@ public class BookService {
 
     public Book borrowBook(Long Bookid, Long Userid)
     {
-        Book book = findById(Bookid);
+        Book book = findByid(Bookid);
         User user = userRepo.findById(Userid).orElse(null);
 
         if(book != null && book.isBorrowed() == false && user != null)
         {
             book.setBorrowed(true);
             book.setBorrowedBy(user);
-            return save(book);
+            return create(book);
         }
         return null;
     }
 
     public Book returnBook(Long bookid)
     {
-        Book book = findById(bookid);
+        Book book = findByid(bookid);
         if(book != null && book.isBorrowed())
         {
             book.setBorrowedBy(null);
             book.setBorrowed(false);
-            return save(book);
+            return create(book);
         }
         return null;
     }
